@@ -42,7 +42,7 @@ function greeting() {
   return 'Bonsoir';
 }
 
-export function HomePage({ go, notify, user, onSearch, onSignup }: HomePageProps) {
+export function HomePage({ go, user, onSearch, onSignup }: HomePageProps) {
   const { resources } = useResources();
   const [favs] = useLocalStorage<string[]>('isethub-favs', []);
   const trending = [...resources].sort((a, b) => b.votes - a.votes).slice(0, 3);
