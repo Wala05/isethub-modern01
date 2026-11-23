@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { Home, MapPin, Search, X } from 'lucide-react';
 import { useLocalStorage } from '@/lib/useLocalStorage';
 import type { NotifyFn } from '@/lib/types';
 import { EmptyState } from '@/components/shared/EmptyState';
@@ -66,32 +65,36 @@ export function HousingSection({ notify }: { notify: NotifyFn }) {
 
   return (
     <div>
-      <label className="mb-5 flex h-12 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3.5 shadow-sm transition focus-within:border-[#126cb1] focus-within:ring-4 focus-within:ring-[#126cb1]/10">
-        <Search size={18} className="shrink-0 text-slate-400" />
-        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Zone, type, mot-clé…" aria-label="Rechercher un logement" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none placeholder:text-slate-400" />
-        {query && <button onClick={() => setQuery('')} aria-label="Effacer" className="text-slate-400 hover:text-slate-700"><X size={16} /></button>}
+      <label className="mb-2 flex h-12 items-center gap-3 border border-[var(--line)] bg-[var(--surface)] px-4 transition focus-within:border-[var(--accent)]">
+        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Zone, type, mot-clé…" aria-label="Rechercher un logement" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none placeholder:text-[var(--ink-faint)]" />
+        {query && <button onClick={() => setQuery('')} aria-label="Effacer" className="index-tag transition hover:!text-[var(--accent)]">✕</button>}
       </label>
+      <p className="index-tag mb-6">{filtered.length} logement{filtered.length > 1 ? 's' : ''}</p>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((housing) => {
+      <div>
+        {filtered.map((housing, index) => {
           const saved = favs.includes(housing.id);
           return (
-            <article key={housing.id} className="flex flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lift">
-              <div className="flex items-start justify-between gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#fff4df] text-[#d4840f]"><Home size={20} /></span>
-                <strong className="rounded-xl bg-[#eaf5fc] px-3 py-1.5 text-sm font-extrabold text-[#126cb1]">{housing.rent}</strong>
+            <article key={housing.id} className="group hairline grid gap-4 py-7 transition hover:bg-[var(--surface-2)] sm:px-5 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-10">
+              <div className="flex items-baseline gap-5 lg:w-60 lg:flex-col lg:gap-2">
+                <span className="index-tag transition group-hover:text-[var(--accent)]">/{String(index + 1).padStart(2, '0')}/</span>
+                <div>
+                  <h3 className="text-xl font-extrabold leading-snug tracking-tight">{housing.title}</h3>
+                  <p className="index-tag mt-1 uppercase">{housing.area} · {housing.kind}</p>
+                </div>
               </div>
-              <h3 className="mt-4 font-extrabold leading-snug">{housing.title}</h3>
-              <p className="mt-1 flex items-center gap-1.5 text-xs font-bold text-slate-400"><MapPin size={13} /> {housing.area} · {housing.kind}</p>
-              <p className="mt-3 flex-1 text-sm leading-6 text-slate-500">{housing.description}</p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {housing.perks.map((perk) => <span key={perk} className="rounded-lg bg-slate-50 px-2 py-1 text-[11px] font-bold text-slate-500">{perk}</span>)}
+              <div>
+                <p className="text-sm leading-6 text-[var(--ink-soft)]">{housing.description}</p>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                  {housing.perks.map((perk) => <span key={perk} className="index-tag">{perk}</span>)}
+                </div>
               </div>
-              <div className="mt-4 flex items-center justify-between gap-2 border-t border-slate-100 pt-4">
-                <span className="text-xs font-bold text-slate-400">{housing.available}</span>
-                <div className="flex gap-2">
-                  <button onClick={() => toggleFav(housing.id)} aria-pressed={saved} aria-label={saved ? 'Retirer des favoris' : 'Ajouter aux favoris'} className={`rounded-xl border p-2.5 transition ${saved ? 'border-[#fba831] bg-[#fff4df] text-[#d4840f]' : 'border-slate-200 text-slate-500 hover:border-[#fba831] hover:text-[#d4840f]'}`}>★</button>
-                  <button onClick={() => notify('Le propriétaire a reçu ta demande pour « ' + housing.title + ' ».')} className="rounded-xl bg-[#126cb1] px-3.5 py-2 text-xs font-extrabold text-white transition hover:bg-[#0f5b96]">Contacter</button>
+              <div className="flex flex-col items-start gap-3 border border-[var(--line)] p-5 lg:w-60 lg:items-stretch">
+                <strong className="text-lg font-extrabold tracking-tight">{housing.rent}</strong>
+                <span className="index-tag">{housing.available}</span>
+                <div className="flex items-center justify-between gap-3">
+                  <button onClick={() => toggleFav(housing.id)} aria-pressed={saved} aria-label={saved ? 'Retirer des favoris' : 'Ajouter aux favoris'} className={`text-lg leading-none transition ${saved ? 'text-[var(--accent)]' : 'text-[var(--ink-faint)] hover:text-[var(--accent)]'}`}>★</button>
+                  <button onClick={() => notify('Le propriétaire a reçu ta demande pour « ' + housing.title + ' ».')} className="btn btn-line !min-h-9 text-xs uppercase tracking-[.12em]">Contacter</button>
                 </div>
               </div>
             </article>
@@ -103,10 +106,12 @@ export function HousingSection({ notify }: { notify: NotifyFn }) {
         <EmptyState text="Aucun logement ne correspond à ta recherche." action={{ label: 'Effacer la recherche', onClick: () => setQuery('') }} />
       )}
 
-      <p className="mt-6 text-center text-xs font-semibold text-slate-400">
-        Tu as un logement à proposer&nbsp;?
-        <button onClick={() => notify('Merci ! La publication d’annonce arrive très vite.')} className="ml-1 font-extrabold text-[#126cb1]">Publie ton annonce</button>
-      </p>
+      <div className="hairline mt-6 pt-6 text-center">
+        <p className="text-sm font-semibold text-[var(--ink-soft)]">
+          Tu as un logement à proposer&nbsp;?
+          <button onClick={() => notify('Merci ! La publication d’annonce arrive très vite.')} className="link-underline ml-2 font-extrabold">Publie ton annonce</button>
+        </p>
+      </div>
     </div>
   );
 }

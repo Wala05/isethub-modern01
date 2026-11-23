@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { Bookmark, BookOpen, Download, FileText, Search, ThumbsUp, Upload, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { departments, resourceTypes, semesters, useResources } from '@/lib/resources';
 import { useLocalStorage } from '@/lib/useLocalStorage';
@@ -60,71 +59,64 @@ export function StudiesPage({ notify, initialType, initialQuery }: StudiesPagePr
 
   return (
     <PageShell eyebrow="Espace études" title="Tout ce qu’il te faut pour réussir." intro="Les bons documents, au bon moment. Cherche, filtre, enregistre et partage les ressources de ta promo.">
-      <div className="mb-5 flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <label className="flex h-12 flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3.5 transition focus-within:border-[#126cb1] focus-within:ring-4 focus-within:ring-[#126cb1]/10">
-            <Search size={18} className="shrink-0 text-slate-400" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Matière, titre, auteur…" aria-label="Rechercher une ressource" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none placeholder:text-slate-400" />
-            {query && <button onClick={() => setQuery('')} aria-label="Effacer" className="text-slate-400 hover:text-slate-700"><X size={16} /></button>}
-          </label>
-          <button onClick={() => setUploadOpen(true)} className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#fba831] px-5 text-sm font-extrabold text-[#021d33] shadow-sm transition hover:-translate-y-0.5 hover:brightness-105">
-            <Upload size={17} /> Partager un document
-          </button>
-        </div>
-
-        <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1">
-          {departments.map((item) => (
-            <button key={item} onClick={() => setDepartment(item)} className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${department === item ? 'bg-[#126cb1] text-white shadow-md shadow-[#126cb1]/25' : 'bg-slate-50 text-slate-500 hover:bg-[#e8f3fb] hover:text-[#126cb1]'}`}>{item}</button>
-          ))}
-          <button onClick={() => setOnlyFavs((value) => !value)} className={`ml-auto flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition ${onlyFavs ? 'bg-[#fba831] text-[#021d33]' : 'bg-[#fff4df] text-[#d4840f]'}`}>
-            <Bookmark size={15} fill={onlyFavs ? 'currentColor' : 'none'} /> Favoris ({favs.length})
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <SelectFilter label="Type" value={type} setValue={setType} options={['Tous', ...resourceTypes]} />
-          <SelectFilter label="Semestre" value={semester} setValue={setSemester} options={['Tous', ...semesters]} />
-        </div>
+      <div className="hairline mb-6 flex flex-col gap-4 py-6 sm:flex-row sm:items-center">
+        <label className="flex h-12 flex-1 items-center gap-3 border border-[var(--line)] bg-[var(--surface)] px-4 transition focus-within:border-[var(--accent)]">
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Matière, titre, auteur…" aria-label="Rechercher une ressource" className="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none placeholder:text-[var(--ink-faint)]" />
+          {query && <button onClick={() => setQuery('')} aria-label="Effacer" className="index-tag transition hover:!text-[var(--accent)]">✕</button>}
+        </label>
+        <button onClick={() => setUploadOpen(true)} className="btn btn-primary shrink-0 uppercase tracking-[.1em]">Partager un document</button>
       </div>
 
-      <div className="mb-4 flex items-center justify-between px-1">
-        <p className="text-sm font-bold text-slate-500">{filtered.length} ressource{filtered.length > 1 ? 's' : ''}</p>
-        {hasFilters && <button onClick={reset} className="text-sm font-extrabold text-[#126cb1]">Réinitialiser</button>}
+      <div className="no-scrollbar -mx-5 mb-4 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:px-0">
+        {departments.map((item) => (
+          <button key={item} onClick={() => setDepartment(item)} className={`shrink-0 border px-4 py-2 text-sm font-bold transition ${department === item ? 'border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)]' : 'border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}`}>{item}</button>
+        ))}
+        <button onClick={() => setOnlyFavs((value) => !value)} className={`ml-auto shrink-0 border px-4 py-2 text-sm font-bold transition ${onlyFavs ? 'border-[var(--accent)] bg-[var(--accent)] text-white' : 'border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]'}`}>
+          Favoris ({favs.length})
+        </button>
       </div>
 
-      <div className="grid gap-3">
-        {loading && [0, 1, 2].map((n) => <div key={n} className="skeleton h-24 rounded-3xl" />)}
-        {!loading && filtered.map((resource) => {
+      <div className="mb-8 grid grid-cols-2 gap-3">
+        <SelectFilter label="Type" value={type} setValue={setType} options={['Tous', ...resourceTypes]} />
+        <SelectFilter label="Semestre" value={semester} setValue={setSemester} options={['Tous', ...semesters]} />
+      </div>
+
+      <div className="mb-2 flex items-center justify-between px-1">
+        <p className="index-tag">{filtered.length} ressource{filtered.length > 1 ? 's' : ''}</p>
+        {hasFilters && <button onClick={reset} className="btn btn-line !min-h-8 text-xs uppercase tracking-[.12em]">Réinitialiser</button>}
+      </div>
+
+      <div>
+        {loading && [0, 1, 2].map((n) => <div key={n} className="skeleton hairline my-3 h-24" />)}
+        {!loading && filtered.map((resource, index) => {
           const saved = favs.includes(resource.id);
           const liked = voted.includes(resource.id);
           return (
-            <article key={resource.id} className="group flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b8dbf2] hover:shadow-lift sm:flex-row sm:items-center sm:p-5">
-              <div className="flex items-start gap-4 sm:flex-1 sm:items-center">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#eaf5fc] text-[#126cb1]"><FileText size={21} /></div>
+            <article key={resource.id} className="group hairline flex flex-col gap-4 py-6 transition hover:bg-[var(--surface-2)] sm:flex-row sm:items-center sm:gap-6 sm:px-5">
+              <div className="flex items-start gap-5 sm:flex-1 sm:items-center">
+                <span className="index-tag w-10 shrink-0 transition group-hover:text-[var(--accent)]">/{String(index + 1).padStart(2, '0')}/</span>
                 <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex flex-wrap items-center gap-2">
-                    <span className="rounded-md bg-[#eef7fd] px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[#126cb1]">{resource.resource_type}</span>
-                    <span className="text-xs font-bold text-slate-400">{resource.department} · {resource.semester}</span>
+                  <div className="mb-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="text-[10px] font-extrabold uppercase tracking-[.16em] text-[var(--accent)]">{resource.resource_type}</span>
+                    <span className="index-tag">{resource.department} · {resource.semester}</span>
                   </div>
-                  <h3 className="font-extrabold leading-snug">{resource.title}</h3>
-                  <p className="mt-1 text-xs font-semibold text-slate-400">Partagé par {resource.author_name}</p>
+                  <h3 className="text-lg font-extrabold leading-snug tracking-tight">{resource.title}</h3>
+                  <p className="mt-1 text-xs font-semibold text-[var(--ink-faint)]">Partagé par {resource.author_name}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 border-t border-slate-100 pt-3 sm:border-0 sm:pt-0">
-                <button onClick={() => toggleFav(resource)} aria-label={saved ? 'Retirer des favoris' : 'Ajouter aux favoris'} aria-pressed={saved} className={`rounded-xl border p-2.5 transition ${saved ? 'border-[#fba831] bg-[#fff4df] text-[#d4840f]' : 'border-slate-200 text-slate-500 hover:border-[#fba831] hover:text-[#d4840f]'}`}>
-                  <Bookmark size={17} fill={saved ? 'currentColor' : 'none'} />
-                </button>
-                <button onClick={() => notify('Aperçu ouvert pour « ' + resource.title + ' »')} aria-label="Prévisualiser" className="rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:border-[#126cb1] hover:text-[#126cb1]"><BookOpen size={17} /></button>
-                <button onClick={() => notify('Téléchargement de « ' + resource.title + ' »')} aria-label="Télécharger" className="rounded-xl border border-slate-200 p-2.5 text-slate-500 transition hover:border-[#126cb1] hover:text-[#126cb1]"><Download size={17} /></button>
-                <button onClick={() => toggleVote(resource)} aria-pressed={liked} className={`ml-auto flex items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-sm font-extrabold transition sm:ml-0 ${liked ? 'bg-[#126cb1] text-white' : 'bg-[#fff4df] text-[#d4840f]'}`}>
-                  <ThumbsUp size={16} fill={liked ? 'currentColor' : 'none'} /> {resource.votes}
+              <div className="flex items-center gap-2 border-t border-[var(--line)] pt-4 sm:border-0 sm:pt-0">
+                <button onClick={() => toggleFav(resource)} aria-label={saved ? 'Retirer des favoris' : 'Ajouter aux favoris'} aria-pressed={saved} className={`text-lg leading-none transition ${saved ? 'text-[var(--accent)]' : 'text-[var(--ink-faint)] hover:text-[var(--accent)]'}`}>★</button>
+                <button onClick={() => notify('Aperçu ouvert pour « ' + resource.title + ' »')} aria-label="Prévisualiser" className="index-tag px-1 transition hover:!text-[var(--accent)]">Lire</button>
+                <button onClick={() => notify('Téléchargement de « ' + resource.title + ' »')} aria-label="Télécharger" className="index-tag px-1 transition hover:!text-[var(--accent)]">↓</button>
+                <button onClick={() => toggleVote(resource)} aria-pressed={liked} className={`ml-auto flex items-center gap-1.5 border px-3.5 py-2 text-sm font-extrabold transition sm:ml-0 ${liked ? 'border-[var(--ink)] bg-[var(--ink)] text-[var(--paper)]' : 'border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}`}>
+                  ▲ {resource.votes}
                 </button>
               </div>
             </article>
           );
         })}
         {!loading && filtered.length === 0 && (
-          <EmptyState text={onlyFavs ? 'Tu n’as pas encore de favoris. Touche le marque-page sur une ressource pour la retrouver ici.' : 'Aucune ressource avec ces filtres.'} action={hasFilters ? { label: 'Réinitialiser les filtres', onClick: reset } : undefined} />
+          <EmptyState text={onlyFavs ? 'Tu n’as pas encore de favoris. Touche l’étoile sur une ressource pour la retrouver ici.' : 'Aucune ressource avec ces filtres.'} action={hasFilters ? { label: 'Réinitialiser les filtres', onClick: reset } : undefined} />
         )}
       </div>
 
@@ -143,16 +135,16 @@ function UploadModal({ onClose, onSubmit }: UploadModalProps) {
 
   return (
     <Modal title="Partager une ressource" onClose={onClose}>
-      <p className="mt-1 text-sm text-slate-500">Aide ta promo en partageant le titre et les informations du document.</p>
-      <input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Titre du document" className="mt-5 h-12 w-full rounded-xl border border-slate-200 px-3.5 text-sm font-semibold outline-none transition focus:border-[#126cb1] focus:ring-4 focus:ring-[#126cb1]/10" />
+      <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">Aide ta promo en partageant le titre et les informations du document.</p>
+      <input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Titre du document" className="mt-6 h-12 w-full border border-[var(--line)] px-3.5 text-sm font-semibold outline-none transition focus:border-[var(--accent)]" />
       <div className="mt-3 grid gap-2 sm:grid-cols-3">
         <SelectFilter label="Type" value={type} setValue={setType} options={resourceTypes} />
         <SelectFilter label="Département" value={department} setValue={setDepartment} options={departments.slice(1)} />
         <SelectFilter label="Semestre" value={semester} setValue={setSemester} options={semesters} />
       </div>
-      <div className="mt-6 flex justify-end gap-2">
-        <button onClick={onClose} className="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-500 transition hover:bg-slate-50">Annuler</button>
-        <button disabled={!title.trim()} onClick={() => onSubmit(title.trim(), type, department, semester)} className="rounded-xl bg-[#126cb1] px-5 py-2.5 text-sm font-extrabold text-white shadow-md shadow-[#126cb1]/25 transition hover:bg-[#0f5b96] disabled:opacity-50">Ajouter</button>
+      <div className="mt-7 flex justify-end gap-3">
+        <button onClick={onClose} className="btn btn-ghost !min-h-11 text-xs uppercase tracking-[.1em]">Annuler</button>
+        <button disabled={!title.trim()} onClick={() => onSubmit(title.trim(), type, department, semester)} className="btn btn-primary !min-h-11 text-xs uppercase tracking-[.1em]">Ajouter</button>
       </div>
     </Modal>
   );

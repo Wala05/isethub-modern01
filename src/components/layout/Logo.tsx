@@ -1,9 +1,11 @@
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <span className="flex items-center gap-3">
-      <img src="/assets/images/Gemini_Generated_Image_8e91l88e91l88e91-removebg-preview.png" alt="ISET Djerba" className="h-10 w-[64px] object-contain sm:h-12 sm:w-[78px]" />
-      <span className={`border-l pl-3 text-lg font-extrabold leading-none tracking-tight ${light ? 'border-white/20 text-white' : 'border-slate-200 text-[#021d33]'}`}>
-        Iset<span className={light ? 'text-[#fba831]' : 'text-[#126cb1]'}>Hub</span>
+    <span className="flex items-baseline gap-2">
+      <span className={`text-xl font-extrabold leading-none tracking-tight ${light ? 'text-[#fafaf7]' : 'text-[var(--ink)]'}`}>
+        Iset<span className="text-[var(--accent)]">Hub</span>
+      </span>
+      <span className={`hidden text-[10px] font-bold uppercase tracking-[.2em] sm:inline ${light ? 'text-[#fafaf7]/50' : 'text-[var(--ink-faint)]'}`}>
+        ISET Djerba
       </span>
     </span>
   );

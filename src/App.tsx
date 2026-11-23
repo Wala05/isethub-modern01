@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Check } from 'lucide-react';
 import './App.css';
 import { supabase } from './lib/supabase';
 import { viewFromHash } from './lib/nav';
@@ -130,8 +129,8 @@ function App() {
       )}
 
       {toast && (
-        <div role="status" className="animate-pop-in fixed bottom-24 left-1/2 z-[80] flex w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-2 rounded-2xl bg-[#021d33] px-5 py-3 text-sm font-bold text-white shadow-2xl ring-1 ring-white/10 lg:bottom-6">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#fba831] text-[#021d33]"><Check size={13} strokeWidth={3} /></span>
+        <div role="status" className="animate-rise fixed bottom-24 left-1/2 z-[80] flex w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-3 bg-[var(--ink)] px-5 py-3 text-sm font-bold text-[var(--paper)] lg:bottom-6">
+          <span className="text-[10px] font-bold tracking-[.08em] opacity-50">/✓/</span>
           {toast}
         </div>
       )}

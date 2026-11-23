@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Car, Home, Store } from 'lucide-react';
 import { HousingSection } from '@/components/housing/HousingSection';
 import { RideSection } from '@/components/rides/RideSection';
 import { DealsHub } from '@/components/life/DealsHub';
@@ -9,9 +8,9 @@ import type { NotifyFn } from '@/lib/types';
 
 type LifeTab = 'logement' | 'covoit' | 'bons';
 const tabs = [
-  { key: 'logement', label: 'Logement & Coloc', icon: Home },
-  { key: 'covoit', label: 'Covoiturage', icon: Car },
-  { key: 'bons', label: 'Bons plans', icon: Store },
+  { key: 'logement', label: 'Logement & Coloc' },
+  { key: 'covoit', label: 'Covoiturage' },
+  { key: 'bons', label: 'Bons plans' },
 ] as const;
 
 export function LifePage({ notify, initialTab }: { notify: NotifyFn; initialTab?: string }) {
@@ -21,9 +20,11 @@ export function LifePage({ notify, initialTab }: { notify: NotifyFn; initialTab?
   return (
     <PageShell eyebrow="Vie étudiante" title="La vie autour du campus, en mieux." intro="Parce que les études, c’est aussi trouver son chez-soi, rentrer ensemble et connaître les bons endroits.">
       <SegmentedTabs tabs={tabs} value={tab} onChange={setTab} />
-      {tab === 'logement' && <HousingSection notify={notify} />}
-      {tab === 'covoit' && <RideSection notify={notify} />}
-      {tab === 'bons' && <DealsHub />}
+      <div key={tab} className="animate-fade">
+        {tab === 'logement' && <HousingSection notify={notify} />}
+        {tab === 'covoit' && <RideSection notify={notify} />}
+        {tab === 'bons' && <DealsHub />}
+      </div>
     </PageShell>
   );
 }

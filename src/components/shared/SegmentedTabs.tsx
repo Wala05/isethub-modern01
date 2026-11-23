@@ -5,18 +5,20 @@ type SegmentedTabsProps<K extends string> = { tabs: readonly Tab<K>[]; value: K;
 
 export function SegmentedTabs<K extends string>({ tabs, value, onChange }: SegmentedTabsProps<K>) {
   return (
-    <div className="no-scrollbar mb-6 flex gap-1.5 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm" role="tablist">
-      {tabs.map(({ key, label, icon: Icon }) => (
+    <div className="no-scrollbar hairline mb-10 flex gap-6 overflow-x-auto" role="tablist">
+      {tabs.map(({ key, label, icon: _icon }, index) => (
         <button
           key={key}
           role="tab"
           aria-selected={value === key}
           onClick={() => onChange(key)}
-          className={`flex min-w-fit flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-bold transition ${
-            value === key ? 'bg-[#126cb1] text-white shadow-md shadow-[#126cb1]/25' : 'text-slate-500 hover:bg-slate-50 hover:text-[#126cb1]'
+          className={`shrink-0 border-b-2 pb-3 pt-1 text-sm font-bold tracking-wide transition ${
+            value === key ? 'border-[var(--accent)] text-[var(--ink)]' : 'border-transparent text-[var(--ink-soft)] hover:text-[var(--ink)]'
           }`}
         >
-          {Icon && <Icon size={17} />}
+          <span className={`mr-2 text-[10px] font-bold ${value === key ? 'text-[var(--accent)]' : 'text-[var(--ink-faint)]'}`}>
+            /{String(index + 1).padStart(2, '0')}/
+          </span>
           {label}
         </button>
       ))}

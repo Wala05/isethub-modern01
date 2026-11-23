@@ -6,7 +6,7 @@ export function SelectFilter({ value, setValue, options, label }: SelectFilterPr
       aria-label={label}
       value={value}
       onChange={(event) => setValue(event.target.value)}
-      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-slate-600 outline-none transition focus:border-[#126cb1] focus:ring-4 focus:ring-[#126cb1]/10"
+      className="h-11 w-full border border-[var(--line)] bg-[var(--surface)] px-3 text-sm font-bold text-[var(--ink)] outline-none transition focus:border-[var(--accent)]"
     >
       {options.map((option) => <option key={option}>{option}</option>)}
     </select>
