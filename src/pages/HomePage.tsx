@@ -142,9 +142,9 @@ export function HomePage({ go, user, onSearch, onSignup }: HomePageProps) {
           </div>
         </div>
 
-        <div className="bg-[#101820] p-7 text-white sm:p-9">
+        <div className="bg-[#05507a] p-7 text-white sm:p-9">
           <p className="text-[11px] font-extrabold uppercase tracking-[.22em] text-white/50">Cette semaine</p>
-          <h3 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">Bons plans étudiants</h3>
+          <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Bons plans étudiants</h3>
           <div className="mt-6">
             {deals.map((deal, index) => (
               <button key={deal.title} onClick={() => go('vie', 'bons')} className="group flex w-full gap-4 border-t border-white/10 py-4 text-left transition hover:bg-white/5">
@@ -179,19 +179,19 @@ export function HomePage({ go, user, onSearch, onSignup }: HomePageProps) {
 
       {/* ───────── CTA pleine largeur ───────── */}
       {!user && (
-        <section className="bg-[var(--accent)] text-white">
+        <section className="bg-[var(--accent)] text-[#101820]">
           <div className="container-page grid items-center gap-8 py-16 sm:py-20 lg:grid-cols-[1.2fr_.8fr]">
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[.22em] text-white/60">Rejoins ta communauté ISET</p>
-              <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-[-.03em] sm:text-5xl">
+              <p className="text-[11px] font-extrabold uppercase tracking-[.22em] text-[#101820]/60">Rejoins ta communauté ISET</p>
+              <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-[-.03em] text-[#05507a] sm:text-5xl">
                 Compte gratuit avec ton email @iset.tn.
               </h2>
-              <p className="mt-4 max-w-lg text-base leading-7 text-white/85">
+              <p className="mt-4 max-w-lg text-base leading-7 text-[#101820]/80">
                 Enregistre tes favoris, partage des documents et ne rate plus rien.
               </p>
             </div>
             <div className="lg:justify-self-end">
-              <button onClick={onSignup} className="btn bg-[var(--ink)] text-[var(--paper)] px-8 uppercase tracking-[.1em] hover:bg-white hover:text-[var(--ink)]">
+              <button onClick={onSignup} className="btn bg-[#05507a] text-white px-8 uppercase tracking-[.1em] hover:bg-[var(--ink)]">
                 Créer mon compte
               </button>
             </div>

@@ -17,9 +17,10 @@
   --surface: #ffffff;    /* cards */
   --surface-2: #f1f1ec;  /* muted blocks */
   --line: #e4e4dd;       /* hairline dividers */
-  --line-strong: #101820;
-  --accent: #c8451d;     /* editorial red-orange */
-  --accent-soft: #f6e3db;
+  --line-strong: #05507a;
+  --accent: #fab757;     /* warm amber */
+  --accent-soft: #fdf0d9;
+  --heading: #05507a;    /* title blue */
   --gold: #b98a2f;
 }
 
@@ -32,9 +33,10 @@
   --surface: #171d23;
   --surface-2: #1d242b;
   --line: #263038;
-  --line-strong: #edf1f4;
-  --accent: #e06a42;
-  --accent-soft: #33201a;
+  --line-strong: #7db4d6;
+  --accent: #fab757;
+  --accent-soft: #33290f;
+  --heading: #8ec6e8;
   --gold: #d0a352;
 }
 
@@ -44,7 +46,7 @@ body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--paper);
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; -webkit-tap-highlight-color: transparent; background: none; border: 0; padding: 0; text-align: inherit; }
 input, select, textarea { background: var(--surface); border: 0; }
-::selection { background: var(--accent); color: #fff; }
+::selection { background: var(--accent); color: #101820; }
 #root { min-height: 100vh; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -83,6 +85,8 @@ input, select, textarea { background: var(--surface); border: 0; }
   color: var(--ink-faint);
 }
 
+h1, h2, h3 { color: var(--heading); }
+
 .hairline { border-top: 1px solid var(--line); }
 
 .rule-strong { border-top: 2px solid var(--line-strong); }
@@ -101,8 +105,8 @@ input, select, textarea { background: var(--surface); border: 0; }
 }
 .btn:active { transform: translateY(1px); }
 .btn-primary { background: var(--ink); color: var(--paper); }
-.btn-primary:hover { background: var(--accent); color: #fff; }
-.btn-accent { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent); color: #101820; }
+.btn-accent { background: var(--accent); color: #101820; }
 .btn-accent:hover { filter: brightness(1.08); }
 .btn-ghost { border: 1px solid var(--line); color: var(--ink); background: transparent; }
 .btn-ghost:hover { border-color: var(--ink); }
